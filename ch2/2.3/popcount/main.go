@@ -36,4 +36,21 @@ func PopCountLoop(x uint64) int {
 	return int(tcp)
 }
 
+func PopCountShift(x uint64) (count int) {
+	for i := 0; i < 64; i++ {
+		if (x & 1) == 1 {
+			count++
+		}
+		x <<= 1
+	}
+	return
+}
+
+func PopCountClear(x uint64) (count int) {
+	for ; x != 0; x = (x & (x - 1)) {
+		count++
+	}
+	return
+}
+
 //!-
