@@ -12,7 +12,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/cyberroadie/golangexercises/ch2/2.1/tempconv"
+	"github.com/cyberroadie/golangexercises/ch2/2.2/tempconv"
 )
 
 func main() {
