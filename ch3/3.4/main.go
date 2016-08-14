@@ -16,6 +16,7 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 const (
@@ -25,7 +26,6 @@ const (
 	xyscale       = width / 2 / xyrange // pixels per x or y unit
 	zscale        = height * 0.4        // pixels per z unit
 	angle         = math.Pi / 6         // angle of x, y axes (=30°)
-	fill          = "#FF0000"
 )
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30°), cos(30°)
@@ -35,8 +35,18 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "web" {
 		//!+http
 		handler := func(w http.ResponseWriter, r *http.Request) {
+			width, err := strconv.Atoi(r.URL.Query().Get("width"))
+			if err != nil {
+				width = 1200
+			}
+			height, err := strconv.Atoi(r.URL.Query().Get("height"))
+			if err != nil {
+				height = 640
+			}
+			color := r.URL.Query().Get("color")
+
 			w.Header().Set("Content-Type", "image/svg+xml")
-			graph(w)
+			graph(w, width, height, color)
 		}
 		http.HandleFunc("/", handler)
 		//!-http
@@ -47,11 +57,11 @@ func main() {
 	file, _ := os.Create("graph.svg")
 	defer file.Close()
 	w := bufio.NewWriter(file)
-	graph(w)
+	graph(w, width, height, "")
 
 }
 
-func graph(out io.Writer) {
+func graph(out io.Writer, width, height int, color string) {
 	fmt.Fprintf(out, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
@@ -75,6 +85,10 @@ func graph(out io.Writer) {
 			dx, dy, fill, err := corner(i+1, j+1)
 			if err != nil {
 				continue
+			}
+
+			if color != "" {
+				fill = color
 			}
 
 			fmt.Fprintf(out, "<polygon points='%g,%g %g,%g %g,%g %g,%g' style='fill: "+fill+"'/>\n",
