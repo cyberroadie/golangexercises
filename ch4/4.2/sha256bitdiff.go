@@ -41,7 +41,7 @@ func main() {
 
 func byte2Bits(s []byte) {
 	for _, c := range s {
-		fmt.Printf("%b", c)
+		fmt.Printf("%.8b", c)
 	}
 	fmt.Println("")
 }
