@@ -15,13 +15,13 @@ func init() {
 }
 
 func main() {
-	hw1 := os.Args[1]
-	hw2 := os.Args[2]
-
-	if hw1 == "" || hw2 == "" {
+	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "program needs 2 string inputs")
 		os.Exit(1)
 	}
+
+	hw1 := os.Args[1]
+	hw2 := os.Args[2]
 
 	h1 := createHash(hw1)
 	h2 := createHash(hw2)
@@ -35,7 +35,7 @@ func main() {
 
 func byte2Bits(s []byte) {
 	for _, c := range s {
-		fmt.Printf("%b", c)
+		fmt.Printf("%.8b", c)
 	}
 	fmt.Println("")
 }
