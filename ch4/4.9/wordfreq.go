@@ -29,7 +29,7 @@ func main() {
 	w.Init(os.Stdout, 0, 8, 0, '\t', 0)
 
 	for k, v := range wordfreq {
-		fmt.Fprintf(w, "%s\t\t\t\t%d\n", k, v)
+		fmt.Fprintf(w, "%s\t%d\n", k, v)
 	}
 	w.Flush()
 }
