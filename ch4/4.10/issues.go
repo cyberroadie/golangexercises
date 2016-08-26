@@ -54,7 +54,7 @@ func main() {
 
 }
 func formatData(issue *github.Issue) string {
-    return fmt.Sprintf("#%-5d %9.9s %.55s\n",issue.Number, issue.User.Login, issue.Title)
+    return fmt.Sprintf("#%-5d %9.9s %.55s",issue.Number, issue.User.Login, issue.Title)
 }
 
 //!-
