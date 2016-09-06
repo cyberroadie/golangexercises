@@ -6,12 +6,7 @@ import (
 )
 
 func main() {
-
-	f := func(r string) string {
-		return "done"
-	}
-
-	fmt.Printf("%s\n", expand("test test test $foo test", f))
+	fmt.Printf("%s\n", expand("test test test $foo test", func(r string) string { return "done" }))
 }
 
 func expand(s string, f func(string) string) string {
