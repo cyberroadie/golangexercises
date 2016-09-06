@@ -37,6 +37,8 @@ func outline(url string) error {
 	forEachNode(doc, startElement, endElement)
 	//!-call
 
+	fmt.Println("")
+
 	return nil
 }
 
@@ -56,9 +58,6 @@ func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
 
 	if post != nil && n.FirstChild != nil {
 		post(n)
-		if n.Type != html.TextNode {
-			fmt.Printf("\n%*s ", depth*2, "")
-		}
 	}
 }
 
@@ -79,7 +78,7 @@ func startElement(n *html.Node) {
 func endElement(n *html.Node) {
 	if n.Type == html.ElementNode {
 		depth--
-		fmt.Printf("</%s>", n.Data)
+		fmt.Printf("\n%*s </%s>", depth*2, "", n.Data)
 	}
 
 }
@@ -92,7 +91,7 @@ func formatNode(n *html.Node) (output string) {
 		}
 		if n.FirstChild == nil {
 			depth--
-			output = fmt.Sprintf("%s />\n%*s ", output, depth*2, "")
+			output = fmt.Sprintf("%s />", output)
 		} else {
 			output = fmt.Sprintf("%s>", output)
 		}
