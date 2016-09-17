@@ -10,23 +10,23 @@ import "fmt"
 
 //!+table
 // prereqs maps computer science courses to their prerequisites.
-var prereqs = map[string][]string{
-	"algorithms": {"data structures"},
-	"calculus":   {"linear algebra"},
+var prereqs = map[string]map[int]string{
+	"algorithms": {1: "data structures"},
+	"calculus":   {1: "linear algebra"},
 
 	"compilers": {
-		"data structures",
-		"formal languages",
-		"computer organization",
+		1: "data structures",
+		2: "formal languages",
+		3: "computer organization",
 	},
 
-	"data structures":       {"discrete math"},
-	"databases":             {"data structures"},
-	"discrete math":         {"intro to programming"},
-	"formal languages":      {"discrete math"},
-	"networks":              {"operating systems"},
-	"operating systems":     {"data structures", "computer organization"},
-	"programming languages": {"data structures", "computer organization"},
+	"data structures":       {1: "discrete math"},
+	"databases":             {1: "data structures"},
+	"discrete math":         {1: "intro to programming"},
+	"formal languages":      {1: "discrete math"},
+	"networks":              {1: "operating systems"},
+	"operating systems":     {1: "data structures", 2: "computer organization"},
+	"programming languages": {1: "data structures", 2: "computer organization"},
 }
 
 //!-table
@@ -38,12 +38,12 @@ func main() {
 	}
 }
 
-func topoSort(m map[string][]string) []string {
+func topoSort(m map[string]map[int]string) []string {
 	var order []string
 	seen := make(map[string]bool)
-	var visitAll func(items []string)
+	var visitAll func(items map[int]string)
 
-	visitAll = func(items []string) {
+	visitAll = func(items map[int]string) {
 		for _, item := range items {
 			if !seen[item] {
 				seen[item] = true
@@ -53,12 +53,13 @@ func topoSort(m map[string][]string) []string {
 		}
 	}
 
-	var keys []string
+	keys := make(map[int]string)
+	i := 0
 	for key := range m {
-		keys = append(keys, key)
+		keys[i] = key
+		i++
 	}
 
-	//      sort.Strings(keys)
 	visitAll(keys)
 	return order
 }
