@@ -10,54 +10,54 @@ import "fmt"
 
 //!+table
 // prereqs maps computer science courses to their prerequisites.
-var prereqs = map[string]map[int]string{
-	"algorithms": {1: "data structures"},
-	"calculus":   {1: "linear algebra"},
+var prereqs = map[string][]string{
+	"algorithms": {"data structures"},
+	"calculus":   {"linear algebra"},
 
 	"compilers": {
-		1: "data structures",
-		2: "formal languages",
-		3: "computer organization",
+		"data structures",
+		"formal languages",
+		"computer organization",
 	},
 
-	"data structures":       {1: "discrete math"},
-	"databases":             {1: "data structures"},
-	"discrete math":         {1: "intro to programming"},
-	"formal languages":      {1: "discrete math"},
-	"networks":              {1: "operating systems"},
-	"operating systems":     {1: "data structures", 2: "computer organization"},
-	"programming languages": {1: "data structures", 2: "computer organization"},
+	"data structures":       {"discrete math"},
+	"databases":             {"data structures"},
+	"discrete math":         {"intro to programming"},
+	"formal languages":      {"discrete math"},
+	"networks":              {"operating systems"},
+	"operating systems":     {"data structures", "computer organization"},
+	"programming languages": {"data structures", "computer organization"},
 }
 
 //!-table
 
 //!+main
 func main() {
-	for i, course := range topoSort(prereqs) {
-		fmt.Printf("%d:\t%s\n", i+1, course)
+	courses := topoSort(prereqs)
+
+	for i := 0; i < len(courses); i++ {
+		fmt.Printf("%d:\t%s\n", i+1, courses[i])
 	}
 }
 
-func topoSort(m map[string]map[int]string) []string {
-	var order []string
+func topoSort(m map[string][]string) map[int]string {
+	order := make(map[int]string)
 	seen := make(map[string]bool)
-	var visitAll func(items map[int]string)
+	var visitAll func(items []string)
 
-	visitAll = func(items map[int]string) {
+	visitAll = func(items []string) {
 		for _, item := range items {
 			if !seen[item] {
 				seen[item] = true
 				visitAll(m[item])
-				order = append(order, item)
+				order[len(order)] = item
 			}
 		}
 	}
 
-	keys := make(map[int]string)
-	i := 0
+	var keys []string
 	for key := range m {
-		keys[i] = key
-		i++
+		keys = append(keys, key)
 	}
 
 	visitAll(keys)
