@@ -64,7 +64,7 @@ func FahrenheitFlag(name string, value Fahrenheit, usage string) *Fahrenheit {
 	return &f.Fahrenheit
 }
 
-//!-CelsiusFlag
+//!-FahrenheitFlag
 
 //!+celsiusFlag
 // *celsiusFlag satisfies the flag.Value interface.

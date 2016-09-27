@@ -14,8 +14,8 @@ import (
 )
 
 //!+
-var tempC = tempconv.CelsiusFlag("cel", 20.0, "the temperature")
-var tempF = tempconv.FahrenheitFlag("far", 20)
+var tempC = tempconv.CelsiusFlag("cel", 20.0, "the temperature in celcius")
+var tempF = tempconv.FahrenheitFlag("far", 70.0, "the temprature in fahrenheit")
 
 func main() {
 	flag.Parse()
