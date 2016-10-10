@@ -1,6 +1,9 @@
 package eval
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // // An Expr is an arithmetic expression.
 // type Expr interface {
@@ -19,6 +22,11 @@ func (v Var) String() string {
 }
 
 func (l literal) String() string {
+
+	if f := math.Mod(float64(l), 1); f == 0 {
+		return fmt.Sprintf("%d", int(l))
+	}
+
 	return fmt.Sprintf("%f", l)
 }
 
